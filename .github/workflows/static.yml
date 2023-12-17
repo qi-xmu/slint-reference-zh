@@ -33,6 +33,22 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v4
+      - name: Upgrade pip and install pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user pipenv
+          pipenv install
+      - name: Cache Pipenv virtualenv
+        uses: actions/cache@v3
+        id: pipenv-cache
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-v1-${{ hashFiles('**/Pipfile') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-v1
+      - name: Generate html 
+        run: |
+          sphinx-build -M html . html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
