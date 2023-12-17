@@ -37,7 +37,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --user pipenv
-          pipenv install
       - name: Cache Pipenv virtualenv
         uses: actions/cache@v3
         id: pipenv-cache
@@ -48,6 +47,7 @@ jobs:
             ${{ runner.os }}-pipenv-v1
       - name: Generate html 
         run: |
+          pipenv shell
           sphinx-build -M html . html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
